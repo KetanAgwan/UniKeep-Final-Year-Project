@@ -14,7 +14,7 @@ public class Login extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        JLabel lblusername = new JLabel("Username");
+        JLabel lblusername = new JLabel("Email");
         lblusername.setBounds(40,20,100,20);
         add(lblusername);
 
@@ -69,9 +69,9 @@ public class Login extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent ae){
         if (ae.getSource() == adminlogin) {
-            String username = tfusername.getText();
+            String email = tfusername.getText();
             String password = tfpassword.getText();
-            String query = "select * from adminlogin where username='"+username+"' and password='"+password+"'";
+            String query = "select * from adminlogin where email='"+email+"' and password='"+password+"'";
             try{
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
@@ -79,12 +79,29 @@ public class Login extends JFrame implements ActionListener {
                     setVisible(false);
                     new Project("admin");
                 }else{
-                    JOptionPane.showMessageDialog(null,"Invalid username or password!");
+                    JOptionPane.showMessageDialog(null,"Invalid E-mail or password!");
                 }
             }catch(Exception e){
                 e.printStackTrace();
             }
-        } else if (ae.getSource() == cancel) {
+        }
+        if (ae.getSource() == teacherlogin) {
+            String email = tfusername.getText();
+            String password = tfpassword.getText();
+            String query = "select email from teacher where email='"+email+"' and password='"+password+"'";
+            try{
+                Conn c = new Conn();
+                ResultSet rs = c.s.executeQuery(query);
+                if (rs.next()) {
+                    setVisible(false);
+                    new Project("teacher");
+                }else{
+                    JOptionPane.showMessageDialog(null,"Invalid E-mail or password!");
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }else if (ae.getSource() == cancel) {
             setVisible(false);
         }
     }

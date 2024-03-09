@@ -88,9 +88,9 @@ public class TeacherDetails extends JFrame implements ActionListener {
         String query;
         if (ae.getSource() == search){
             if (!((String) cempid.getSelectedItem()).isEmpty())
-                query = "select * from teacher where empId='"+ cempid.getSelectedItem()+"'";
+                query = "select name,fname,empId,dob,address,phone,email,class_x,class_xii,adhar,department,dsgntype from teacher where empId='"+ cempid.getSelectedItem()+"'";
             else
-                query = "select * from teacher";
+                query = "select name,fname,empId,dob,address,phone,email,class_x,class_xii,adhar,department,dsgntype from teacher";
             try{
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
@@ -105,7 +105,6 @@ public class TeacherDetails extends JFrame implements ActionListener {
                 e.printStackTrace();
             }
         } else if (ae.getSource() == update) {
-//            setVisible(false);
             new UpdateTeacher();
         } else if (ae.getSource() == add) {
             new AddTeacher();

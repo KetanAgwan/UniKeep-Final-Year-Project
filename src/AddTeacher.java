@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-
+import java.util.Random;
 
 public class AddTeacher extends JFrame implements ActionListener {
     Conn con = new Conn();
@@ -179,13 +179,20 @@ public class AddTeacher extends JFrame implements ActionListener {
                 String adhar = tfadhar.getText();
                 String education = (String) cbeducation.getSelectedItem();
                 String dsgType = (String) desgntype.getSelectedItem();
+                String password = generatePassword();
 
                 try{
-                    String query = "insert into teacher values('"+name+"','"+fname+"','"+empid+"','"+dob+"','"+address+"','"+phone+"','"+email+"','"+x+"','"+xii+"','"+adhar+"','"+education+"','"+ dsgType +"')";
+                    String query = "insert into teacher values('"+name+"','"+fname+"','"+empid+"','"+dob+"','"+address+"','"+phone+"','"+email+"','"+x+"','"+xii+"','"+adhar+"','"+education+"','"+ dsgType +"','"+password+"')";
                     con.s.executeUpdate(query);
                     JOptionPane.showMessageDialog(null,"Teacher details inserted sucessfully.");
                     dispose();
                 }catch(Exception e) {
+                    e.printStackTrace();
+                }
+                try{
+                    new EmailSender(email,password);
+                }catch (Exception e){
+                    JOptionPane.showMessageDialog(null, "Something is wrong", "Warning", JOptionPane.WARNING_MESSAGE);
                     e.printStackTrace();
                 }
             }
@@ -219,6 +226,52 @@ public class AddTeacher extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "invalid name", "Warning", JOptionPane.WARNING_MESSAGE);
         return false;
     }
+
+
+    public static String generatePassword() {
+        String specialChars = "!@#$%&";
+        String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String digits = "0123456789";
+        Random random = new Random();
+
+        StringBuilder passwordBuilder = new StringBuilder();
+        passwordBuilder.append(specialChars.charAt(random.nextInt(specialChars.length())));
+
+        for (int i = 0; i < 3; i++) {
+            passwordBuilder.append(letters.charAt(random.nextInt(letters.length())));
+        }
+
+        for (int i = 0; i < 3; i++) {
+            passwordBuilder.append(digits.charAt(random.nextInt(digits.length())));
+        }
+
+        String password = passwordBuilder.toString();
+        char[] passwordArray = password.toCharArray();
+        for (int i = 0; i < passwordArray.length; i++) {
+            int randomIndex = random.nextInt(passwordArray.length);
+            char temp = passwordArray[i];
+            passwordArray[i] = passwordArray[randomIndex];
+            passwordArray[randomIndex] = temp;
+        }
+
+        String finalPassword =  new String(passwordArray);
+        try{
+            Conn c = new Conn();
+            ResultSet rs = c.s.executeQuery("select password from teacher");
+            while (rs.next()){
+                if (finalPassword.equals(rs.getString(1))){
+                   finalPassword = generatePassword();
+                   break;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return finalPassword;
+    }
+
+
 
     public static void main(String[] args) {
         new AddTeacher();
