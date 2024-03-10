@@ -8,11 +8,12 @@ public class Login extends JFrame implements ActionListener {
     JButton adminlogin,teacherlogin,cancel;
     JTextField tfusername;
     JPasswordField tfpassword;
+    static Project currentInstance;
 
     Login(){
         getContentPane().setBackground(Color.WHITE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+        setTitle("Admin / Teacher Login");
 
         JLabel lblusername = new JLabel("Email");
         lblusername.setBounds(40,20,100,20);
@@ -76,8 +77,11 @@ public class Login extends JFrame implements ActionListener {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
                 if (rs.next()) {
-                    setVisible(false);
-                    new Project("admin");
+                    dispose();
+                    if (Project.getInstanceCount() > 0){
+                        currentInstance.stopInstance().dispose();
+                    }
+                    currentInstance = new Project("admin");
                 }else{
                     JOptionPane.showMessageDialog(null,"Invalid E-mail or password!");
                 }
@@ -93,16 +97,19 @@ public class Login extends JFrame implements ActionListener {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
                 if (rs.next()) {
-                    setVisible(false);
-                    new Project("teacher");
+                    dispose();
+                    if (Project.getInstanceCount() > 0){
+                        currentInstance.stopInstance().dispose();
+                    }
+                    currentInstance = new Project("teacher");
                 }else{
-                    JOptionPane.showMessageDialog(null,"Invalid E-mail or password!");
+                    JOptionPane.showMessageDialog(null, "Invalid Email Or Password!", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             }catch(Exception e){
                 e.printStackTrace();
             }
         }else if (ae.getSource() == cancel) {
-            setVisible(false);
+            dispose();
         }
     }
     public static void main(String[] args) {

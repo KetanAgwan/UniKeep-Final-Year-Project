@@ -9,12 +9,11 @@ public class StudentDetails extends JFrame implements ActionListener {
     JComboBox crollno;
     JTable table;
     JButton search,print,update,add,cancel;
-    StudentDetails(){
+    StudentDetails(String accessingPerson){
         setSize(1100,700);
         setLocation(300,100);
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel heading = new JLabel("Search by Student ID");
         heading.setFont(new Font("Gilroy",Font.BOLD,15));
@@ -65,21 +64,27 @@ public class StudentDetails extends JFrame implements ActionListener {
         print.addActionListener(this);
         add(print);
 
-        update = new JButton("Update");
-        update.setBounds(220,70,80,20);
-        update.addActionListener(this);
-        add(update);
+        if (accessingPerson.equals("teacher")){
+            cancel = new JButton("cancel");
+            cancel.setBounds(220,70,80,20);
+            cancel.addActionListener(this);
+            add(cancel);
+        }else if (accessingPerson.equals("admin")){
+            update = new JButton("Update");
+            update.setBounds(220,70,80,20);
+            update.addActionListener(this);
+            add(update);
 
-        add = new JButton("Add");
-        add.setBounds(320,70,80,20);
-        add.addActionListener(this);
-        add(add);
+            add = new JButton("Add");
+            add.setBounds(320,70,80,20);
+            add.addActionListener(this);
+            add(add);
 
-        cancel = new JButton("cancel");
-        cancel.setBounds(420,70,80,20);
-        cancel.addActionListener(this);
-        add(cancel);
-
+            cancel = new JButton("cancel");
+            cancel.setBounds(420,70,80,20);
+            cancel.addActionListener(this);
+            add(cancel);
+        }
 
         setVisible(true);
     }
@@ -117,6 +122,6 @@ public class StudentDetails extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new StudentDetails();
+        new StudentDetails("admin");
     }
 }

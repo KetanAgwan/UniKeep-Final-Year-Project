@@ -6,7 +6,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Project extends JFrame implements ActionListener {
+    String accessingPerson;
+    static int instanceCount = 0;
+    Project thisInstance = this;
     Project(String accessingPerson){
+        instanceCount++;
+        this.accessingPerson = accessingPerson;
         setSize(1540,850);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,6 +162,20 @@ public class Project extends JFrame implements ActionListener {
             JMenuItem notepad = createMenuItem("Notepad");
             utility.add(notepad);
             notepad.addActionListener(this);
+
+
+//            Add new admin
+
+            JMenu newAdmin = new JMenu("Add new Admin");
+            newAdmin.setForeground(Color.WHITE);
+            newAdmin.setBackground(Color.decode("#333"));
+            newAdmin.setPreferredSize(new Dimension(100, 30));
+            newAdmin.setHorizontalAlignment(SwingConstants.CENTER);
+            mb.add(newAdmin);
+
+            JMenuItem admn = createMenuItem("Add new Admin");
+            newAdmin.add(admn);
+            admn.addActionListener(this);
         }
 
 
@@ -256,6 +275,13 @@ public class Project extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    public static int getInstanceCount(){
+        return instanceCount;
+    }
+
+    public Project stopInstance(){
+        return thisInstance;
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -281,7 +307,7 @@ public class Project extends JFrame implements ActionListener {
         }else if (msg.equals("View Faculty Details")) {
             new TeacherDetails();
         }else if (msg.equals("View Student Details")) {
-            new StudentDetails();
+            new StudentDetails(accessingPerson);
         }else if (msg.equals("Faculty Leave")) {
             new TeacherLeave();
         }else if (msg.equals("Student Leave")) {
@@ -306,6 +332,8 @@ public class Project extends JFrame implements ActionListener {
             new CheckFeeStatus();
         }else if (msg.equals("About")) {
             new About();
+        }else if (msg.equals("Add new Admin")) {
+            new AdminSignup();
         }
     }
 

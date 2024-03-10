@@ -5,8 +5,8 @@ import javax.mail.internet.*;
 public class EmailSender {
 
     EmailSender(String recipient,String password){
-        String from = "agwanketan7517@gmail.com";
-        String passkey = "bevn dybt ruyh zukg";
+        String from = "UniKeepManagementSystem@gmail.com";
+        String passkey = "yxls ozpa wfoj inrz";
 
         String to = recipient;
 
