@@ -38,16 +38,14 @@ public class ExaminationDetails extends JFrame implements ActionListener{
             crollno.setBounds(50,70,150,25);
             crollno.setBackground(Color.WHITE);
             crollno.setEditable(true);
+            crollno.addActionListener(this);
             add(crollno);
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        String semister[] = {"1st Semister","2nd Semister","3rd Semister","4th Semister","5th Semister","6th Semister"};
         csem = new Choice();
-        for (int i = 0; i < semister.length; i++) {
-            csem.addItem(semister[i]);
-        }
+        fillChoice((String ) crollno.getSelectedItem());
         csem.setBounds(225,70,150,30);
         csem.setBackground(Color.white);
         add(csem);
@@ -91,16 +89,20 @@ public class ExaminationDetails extends JFrame implements ActionListener{
         if (ae.getSource() == search){
             try{
                 Conn c = new Conn();
-                ResultSet rs1 = c.s.executeQuery("select * from student where studentid='"+crollno.getSelectedItem()+"'");
+                ResultSet rs1 = c.s.executeQuery("select * from marks where studentid='"+crollno.getSelectedItem()+"'");
                 if (rs1.next()){
                     try{
                         name = rs1.getString(1);
                         new Marks((String) crollno.getSelectedItem(),csem.getSelectedItem(),name);
+//                        ResultSet r =c.s.executeQuery("select course from student where studentid='"+crollno.getSelectedItem()+"'");
+//                        if (rs1.next()){
+//                            fillChoice((String) crollno.getSelectedItem());
+//                        }
                     }catch (Exception e){
                         JOptionPane.showMessageDialog(null, "Something is wrong!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                     rs1.close();
-                    ResultSet rs2 = c.s.executeQuery("select * from subject where studentid='"+crollno.getSelectedItem()+"' and semester='"+csem.getSelectedItem()+"'");
+                    ResultSet rs2 = c.s.executeQuery("select * from marks where studentid='"+crollno.getSelectedItem()+"' and semester='"+csem.getSelectedItem()+"'");
                     if (!rs2.next()){
                         JOptionPane.showMessageDialog(null, "Record not found!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
@@ -110,8 +112,39 @@ public class ExaminationDetails extends JFrame implements ActionListener{
             }catch(Exception e){
                 e.printStackTrace();
             }
+        }else if (ae.getSource() == crollno) {
+            fillChoice((String) crollno.getSelectedItem());
         }else{
             dispose();
+        }
+    }
+
+    public void fillChoice(String rollno){
+        Conn c = new Conn();
+        Conn c1 = new Conn();
+        try{
+            csem.removeAll();
+            ResultSet rs1 = c1.s.executeQuery("select course from student where studentid= '"+rollno+"'");
+            String sems[] = {"1st_semester","2nd_semester","3rd_semester","4th_semester","5th_semester","6th_semester","7th_semester","8th_semester"};
+            if(rs1.next()){
+                String course = rs1.getString(1);
+                ResultSet rs = c.s.executeQuery("select * from fee where course = '"+course+"'");
+                if (rs.next()){
+                    int i = 2,j = 0;
+                    while(i <= 5 ){
+                        if (rs.getString(i).equals(" -- ")){
+                            break;
+                        }else{
+                            csem.addItem(sems[j++]);
+                            csem.addItem(sems[j++]);
+                            i++;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Something is wrong", "Warning", JOptionPane.WARNING_MESSAGE);
+            e.printStackTrace();
         }
     }
 
