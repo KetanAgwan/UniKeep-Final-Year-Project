@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 public class AdminSignup extends JFrame implements ActionListener {
     JButton adminsignup,cancel;
-    JTextField tfemail;
+    JTextField tfname,tfemail;
     JPasswordField tfpassword,tfconfirm;
     FormValidation val = new FormValidation();
 
@@ -15,32 +15,40 @@ public class AdminSignup extends JFrame implements ActionListener {
         setLayout(null);
         setTitle("Admin Signup");
 
+        JLabel lblname = new JLabel("Name");
+        lblname.setBounds(40,20,100,20);
+        add(lblname);
+
+        tfname = new JTextField();
+        tfname.setBounds(150,20,200,30);
+        add(tfname);
+
         JLabel lblusername = new JLabel("Email");
-        lblusername.setBounds(40,20,100,20);
+        lblusername.setBounds(40,60,100,20);
         add(lblusername);
 
         tfemail = new JTextField();
-        tfemail.setBounds(150,20,200,30);
+        tfemail.setBounds(150,60,200,30);
         add(tfemail);
 
         JLabel lblpassword = new JLabel("Password");
-        lblpassword.setBounds(40,60,100,20);
+        lblpassword.setBounds(40,100,100,20);
         add(lblpassword);
 
         tfpassword = new JPasswordField();
-        tfpassword.setBounds(150,60,200,30);
+        tfpassword.setBounds(150,100,200,30);
         add(tfpassword);
 
         JLabel lblcnfpassword = new JLabel("Confirm Password");
-        lblcnfpassword.setBounds(40,100,150,20);
+        lblcnfpassword.setBounds(40,140,150,20);
         add(lblcnfpassword);
 
         tfconfirm = new JPasswordField();
-        tfconfirm.setBounds(150,100,200,30);
+        tfconfirm.setBounds(150,140,200,30);
         add(tfconfirm);
 
         adminsignup = new JButton("Signup");
-        adminsignup.setBounds(40,150,120,40);
+        adminsignup.setBounds(40,180,120,40);
         adminsignup.setBackground(Color.decode("#333"));
         adminsignup.setForeground(Color.white);
         adminsignup.setFont(new Font("Tahoma",Font.BOLD,12));
@@ -48,7 +56,7 @@ public class AdminSignup extends JFrame implements ActionListener {
         add(adminsignup);
 
         cancel = new JButton("Cancel");
-        cancel.setBounds(180,150,120,40);
+        cancel.setBounds(180,180,120,40);
         cancel.setBackground(Color.decode("#333"));
         cancel.setForeground(Color.white);
         cancel.setFont(new Font("Tahoma",Font.BOLD,12));
@@ -62,19 +70,20 @@ public class AdminSignup extends JFrame implements ActionListener {
         image.setBounds(350,0,200,200);
         add(image);
 
-        setSize(550,250);
+        setSize(550,350);
         setLocation(500,250);
         setVisible(true);
     }
 
     public void actionPerformed(ActionEvent ae){
         if (ae.getSource() == adminsignup) {
+            String name = tfname.getText();
             String email = tfemail.getText();
             String password = tfpassword.getText();
             String confirmpass = tfconfirm.getText();
             if (val.isEmailValid(email)){
                 if (password.equals(confirmpass)){
-                    String query = "insert into adminlogin values('"+email+"','"+password+"')";
+                    String query = "insert into adminlogin values('"+name+"','"+email+"','"+password+"')";
                     try{
                         Conn c = new Conn();
                         int k = c.s.executeUpdate(query);

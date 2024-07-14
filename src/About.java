@@ -9,7 +9,6 @@ public class About extends JFrame implements ActionListener {
         setSize(700,450);
         setLocation(400,150);
         getContentPane().setBackground(Color.WHITE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         JLabel heading = new JLabel("<html>UniKeep - <br> College Management System</html>");

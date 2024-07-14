@@ -14,7 +14,6 @@ public class EnterMarks extends JFrame implements ActionListener {
         setLocation(500,100);
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel heading = new JLabel("Enter marks of student");
         heading.setBounds(50,0,500,50);
@@ -25,7 +24,6 @@ public class EnterMarks extends JFrame implements ActionListener {
         lblsearchrno.setFont(new Font("Gilroy",Font.BOLD,15));
         lblsearchrno.setBounds(50,70,150,20);
         add(lblsearchrno);
-
         try{
             Conn c = new Conn();
             int i = 0;
@@ -38,9 +36,10 @@ public class EnterMarks extends JFrame implements ActionListener {
                 i++;
             }
             crollno = new JComboBox(rollnumbers);
-            crollno.setBounds(200,70,150,20);
+            crollno.setBounds(225,70,150,30);
             crollno.setBackground(Color.WHITE);
             crollno.setEditable(true);
+            crollno.addActionListener(this);
             add(crollno);
         }catch (Exception e){
             e.printStackTrace();
@@ -51,12 +50,9 @@ public class EnterMarks extends JFrame implements ActionListener {
         lblmemister.setBounds(50,110,150,20);
         add(lblmemister);
 
-        String semister[] = {"1st Semister","2nd Semister","3rd Semister","4th Semister","5th Semister","6th Semister"};
         cbsemister = new Choice();
-        for (int i = 0; i < semister.length; i++) {
-            cbsemister.addItem(semister[i]);
-        }
-        cbsemister.setBounds(200,110,150,20);
+        fillChoice((String ) crollno.getSelectedItem());
+        cbsemister.setBounds(225,110,150,30);
         cbsemister.setBackground(Color.white);
         add(cbsemister);
 
@@ -150,6 +146,7 @@ public class EnterMarks extends JFrame implements ActionListener {
                     String query2 = "insert into marks values('"+crollno.getSelectedItem()+"','"+cbsemister.getSelectedItem()+"','"+tfmarks1.getText()+"','"+tfmarks2.getText()+"','"+tfmarks3.getText()+"','"+tfmarks4.getText()+"','"+tfmarks5.getText()+"')";
                     if (c.s.executeUpdate(query1) > 0 && c.s.executeUpdate(query2) > 0){
                         JOptionPane.showMessageDialog(null,"Marks Inserted Sucessfully!");
+                        dispose();
                     }else{
                         JOptionPane.showMessageDialog(null, "Record not inserted!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
@@ -157,8 +154,40 @@ public class EnterMarks extends JFrame implements ActionListener {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else if (ae.getSource() == crollno) {
+            fillChoice((String) crollno.getSelectedItem());
         }else{
             dispose();
+        }
+    }
+
+
+    public void fillChoice(String rollno){
+        Conn c = new Conn();
+        Conn c1 = new Conn();
+        try{
+            cbsemister.removeAll();
+            ResultSet rs1 = c1.s.executeQuery("select course from student where studentid= '"+rollno+"'");
+            String sems[] = {"1st_semester","2nd_semester","3rd_semester","4th_semester","5th_semester","6th_semester","7th_semester","8th_semester"};
+            if(rs1.next()){
+                String course = rs1.getString(1);
+                ResultSet rs = c.s.executeQuery("select * from fee where course = '"+course+"'");
+                if (rs.next()){
+                    int i = 2,j = 0;
+                    while(i <= 5 ){
+                        if (rs.getString(i).equals(" -- ")){
+                            break;
+                        }else{
+                            cbsemister.addItem(sems[j++]);
+                            cbsemister.addItem(sems[j++]);
+                            i++;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Something is wrong", "Warning", JOptionPane.WARNING_MESSAGE);
+            e.printStackTrace();
         }
     }
 

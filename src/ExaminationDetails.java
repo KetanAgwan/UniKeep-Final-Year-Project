@@ -13,8 +13,6 @@ public class ExaminationDetails extends JFrame implements ActionListener{
     ExaminationDetails(){
         setSize(1000,475);
         setLocation(300,100);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 

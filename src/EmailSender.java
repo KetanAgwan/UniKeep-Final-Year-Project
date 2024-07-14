@@ -3,7 +3,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailSender {
-
     EmailSender(String recipient,String password){
         String from = "UniKeepManagementSystem@gmail.com";
         String passkey = "yxls ozpa wfoj inrz";

@@ -10,7 +10,6 @@ public class StudentLeaveDetails extends JFrame implements ActionListener {
     JTable table;
     JButton search,print,update,add,cancel;
     StudentLeaveDetails(){
-
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
 
@@ -109,7 +108,7 @@ public class StudentLeaveDetails extends JFrame implements ActionListener {
         } else if (ae.getSource() == add) {
             new StudentLeave();
         } else if (ae.getSource() == cancel) {
-            System.exit(0);
+            dispose();
         }
     }
 

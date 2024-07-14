@@ -4,26 +4,98 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 
 public class Project extends JFrame implements ActionListener {
     String accessingPerson;
     static int instanceCount = 0;
     Project thisInstance = this;
-    Project(String accessingPerson){
+
+    ImageIcon backgroundImageIcon; // Background image icon
+    Image scaledBackgroundImage; // Scaled background image
+    String accessingPersonName;
+
+    Project(String accessingPerson,String accessingPersonName){
         instanceCount++;
         this.accessingPerson = accessingPerson;
+        this.accessingPersonName = accessingPersonName;
         setSize(1540,850);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/first.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(getWidth(),getHeight(),Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        add(image);
 
         JMenuBar mb = new JMenuBar();
         mb.setBackground(Color.decode("#333"));
         mb.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+
+//        add bg image and a glass box
+
+        backgroundImageIcon = new ImageIcon(ClassLoader.getSystemResource("icons/first.jpg"));
+        scaledBackgroundImage = backgroundImageIcon.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT);
+
+        ImageIcon iconImage = new ImageIcon(ClassLoader.getSystemResource("icons/logo.png"));
+
+        JPanel panel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+//                super.paintComponent(g);
+
+                // Draw background image
+                if (scaledBackgroundImage != null) {
+                    g.drawImage(scaledBackgroundImage, 0, 0, this);
+                }
+
+                Graphics2D g2d = (Graphics2D) g.create();
+                // Set rendering hints for smoother graphics
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+                // Draw glass box with rounded corners
+                int x = 350;
+                int y = 100;
+                int width = 800;
+                int height = 500;
+                int cornerRadius = 20;
+                RoundRectangle2D roundedRectangle = new RoundRectangle2D.Double(x, y, width, height, cornerRadius, cornerRadius);
+
+                g2d.setColor(new Color(181, 190, 192, 200)); // Semi-transparent color
+                g2d.fill(roundedRectangle);
+
+//                add text on the box
+                g2d.setColor(Color.BLACK);
+                Font font1 = new Font("Arial", Font.BOLD, 25);
+                Font font2 = new Font("Arial", Font.BOLD, 30);
+                g2d.setFont(font1);
+                String text = "Current User : " + accessingPersonName;
+                FontMetrics fm = g2d.getFontMetrics();
+                int textWidth1 = fm.stringWidth(text);
+                int textHeight1 = fm.getHeight();
+                int textX1 = x + (width - textWidth1) / 2;
+                int textY1 = y + (height + textHeight1) / 2 - 50;
+                g2d.drawString(text, textX1, textY1);
+
+                g2d.setFont(font2);
+                String greetingmsg = "Welcome back " + accessingPersonName + ", Continue your work.";
+                int textWidth2 = fm.stringWidth(greetingmsg);
+                int textHeight2 = fm.getHeight();
+                int textX2 = x + (width - textWidth2) / 2 - 65;
+                int textY2 = y + (height + textHeight2) / 2 + 25;
+                g2d.drawString(greetingmsg, textX2, textY2);
+
+
+//                add image on the box
+
+                int imageX = x + (width - iconImage.getIconWidth()) / 2;
+                int imageY = y + (height - iconImage.getIconHeight()) / 3 - 100; // Adjust position
+                g2d.drawImage(iconImage.getImage(), imageX, imageY, this);
+
+
+                g2d.dispose(); // Clean up graphics resources
+            }
+        };
+
+        add(panel);
+
 
 
 //        this section is for admin
@@ -359,6 +431,6 @@ public class Project extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Project("admin");
+        new Project("admin","Ketan");
     }
 }

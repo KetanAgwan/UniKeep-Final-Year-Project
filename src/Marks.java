@@ -15,7 +15,6 @@ public class Marks extends JFrame implements ActionListener {
         setSize(500,600);
         setLocation(500,100);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.WHITE);
 
         JLabel heading = new JLabel("C.D.JAIN COLLEGE OF COMMERCE");

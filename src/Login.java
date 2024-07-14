@@ -72,7 +72,7 @@ public class Login extends JFrame implements ActionListener {
         if (ae.getSource() == adminlogin) {
             String email = tfusername.getText();
             String password = tfpassword.getText();
-            String query = "select * from adminlogin where email='"+email+"' and password='"+password+"'";
+            String query = "select name from adminlogin where email='"+email+"' and password='"+password+"'";
             try{
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
@@ -81,7 +81,7 @@ public class Login extends JFrame implements ActionListener {
                     if (Project.getInstanceCount() > 0){
                         currentInstance.stopInstance().dispose();
                     }
-                    currentInstance = new Project("admin");
+                    currentInstance = new Project("admin",rs.getString(1));
                 }else{
                     JOptionPane.showMessageDialog(null,"Invalid E-mail or password!");
                 }
@@ -92,7 +92,7 @@ public class Login extends JFrame implements ActionListener {
         if (ae.getSource() == teacherlogin) {
             String email = tfusername.getText();
             String password = tfpassword.getText();
-            String query = "select email from teacher where email='"+email+"' and password='"+password+"'";
+            String query = "select name from teacher where email='"+email+"' and password='"+password+"'";
             try{
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
@@ -101,7 +101,7 @@ public class Login extends JFrame implements ActionListener {
                     if (Project.getInstanceCount() > 0){
                         currentInstance.stopInstance().dispose();
                     }
-                    currentInstance = new Project("teacher");
+                    currentInstance = new Project("teacher",rs.getString(1));
                 }else{
                     JOptionPane.showMessageDialog(null, "Invalid Email Or Password!", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
