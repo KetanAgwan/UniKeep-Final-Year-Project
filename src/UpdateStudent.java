@@ -241,6 +241,46 @@ public class UpdateStudent extends JFrame implements ActionListener {
         }
     }
 
+//    public void fillFormByRollno(String rno){
+//        if (rno.isEmpty()){
+//            JOptionPane.showMessageDialog(null, "Please select Student ID", "Warning", JOptionPane.WARNING_MESSAGE);
+//        }
+//        else {
+//            try{
+//                Conn c = new Conn();
+//                ResultSet rs = c.s.executeQuery("select * from student where studentid='"+rno+"'");
+//                rs.last();
+//                if (rs.getRow() > 0){
+//                    rs.first();
+//                    tfname.setText(rs.getString("name"));
+//                    tffname.setText(rs.getString("fname"));
+//                    labelrollno.setText(rs.getString("studentid"));
+//
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy"); // Notice the spaces instead of '-'
+//                    String stringDate = rs.getString("dob");  // Assuming the date is in '3 Jul 2004' format
+//                    LocalDate localDate = LocalDate.parse(stringDate, formatter);
+//                    Date dobDate = Date.valueOf(localDate);
+//                    dcdob.setDate(dobDate);
+//
+//                    dcdob.setDate(dobDate);
+//                    tfaddress.setText(rs.getString("address"));
+//                    tfphone.setText(rs.getString("phone"));
+//                    tfemail.setText(rs.getString("email"));
+//                    tfx.setText(rs.getString("class_x"));
+//                    tfxii.setText(rs.getString("class_xii"));
+//                    tfadhar.setText(rs.getString("adhar"));
+//                    cbcourse.setSelectedItem(rs.getString("course"));
+//                    cyear.select(rs.getString("admissionyear"));
+//                }else{
+//                    JOptionPane.showMessageDialog(null, "Invalid Student ID", "Warning", JOptionPane.WARNING_MESSAGE);
+//                }
+//            }catch (Exception e){
+//                JOptionPane.showMessageDialog(null, "Operation failed", "Warning", JOptionPane.WARNING_MESSAGE);
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     public void fillFormByRollno(String rno){
         if (rno.isEmpty()){
             JOptionPane.showMessageDialog(null, "Please select Student ID", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -256,12 +296,13 @@ public class UpdateStudent extends JFrame implements ActionListener {
                     tffname.setText(rs.getString("fname"));
                     labelrollno.setText(rs.getString("studentid"));
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
                     String stringDate = rs.getString("dob");
                     LocalDate localDate = LocalDate.parse(stringDate, formatter);
                     Date dobDate = Date.valueOf(localDate);
-
                     dcdob.setDate(dobDate);
+
+
                     tfaddress.setText(rs.getString("address"));
                     tfphone.setText(rs.getString("phone"));
                     tfemail.setText(rs.getString("email"));
@@ -270,10 +311,10 @@ public class UpdateStudent extends JFrame implements ActionListener {
                     tfadhar.setText(rs.getString("adhar"));
                     cbcourse.setSelectedItem(rs.getString("course"));
                     cyear.select(rs.getString("admissionyear"));
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid Student ID", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
-            }catch (Exception e){
+            } catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Operation failed", "Warning", JOptionPane.WARNING_MESSAGE);
                 e.printStackTrace();
             }

@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 
 public class UpdateTeacher extends JFrame implements ActionListener {
@@ -218,7 +219,7 @@ public class UpdateTeacher extends JFrame implements ActionListener {
                     String query = "update teacher set name='"+name+"',fname='"+fname+"',dob= '"+dob+"',address='"+address+"',phone='"+phone+"',email='"+email+"', class_x='"+x+"', class_xii='"+xii+"', adhar='"+adhar+"',department ='"+ education +"', dsgntype='"+ dsgntype +"' where empId = '"+ empid +"';";
                     con.s.executeUpdate(query);
                     JOptionPane.showMessageDialog(null,"Teacher details updated sucessfully.");
-                    System.exit(0);
+                    dispose();
                 }catch(Exception e) {
                     JOptionPane.showMessageDialog(null,"Operation failed");
                     e.printStackTrace();
@@ -246,12 +247,13 @@ public class UpdateTeacher extends JFrame implements ActionListener {
                     tffname.setText(rs.getString("fname"));
                     labelempId.setText(rs.getString("empId"));
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
                     String stringDate = rs.getString("dob");
                     LocalDate localDate = LocalDate.parse(stringDate, formatter);
                     Date dobDate = Date.valueOf(localDate);
-
                     dcdob.setDate(dobDate);
+
+
                     tfaddress.setText(rs.getString("address"));
                     tfphone.setText(rs.getString("phone"));
                     tfemail.setText(rs.getString("email"));
@@ -260,15 +262,16 @@ public class UpdateTeacher extends JFrame implements ActionListener {
                     tfadhar.setText(rs.getString("adhar"));
                     cbeducation.setSelectedItem(rs.getString("department"));
                     desgntype.setSelectedItem(rs.getString("dsgntype"));
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid Employee ID", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
-            }catch (Exception e){
+            } catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Operation failed", "Warning", JOptionPane.WARNING_MESSAGE);
                 e.printStackTrace();
             }
         }
     }
+
 
     public boolean validateAdmission(){
         if (val.validateString(tfname.getText()))
